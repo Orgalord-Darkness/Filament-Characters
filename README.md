@@ -1,2 +1,2 @@
-# Cong-Facile
-Une application pour faciliter 
+# Filament-Characters
+Créer vos personnages avec l'interface Filament
