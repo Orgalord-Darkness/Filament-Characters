@@ -11,7 +11,7 @@ class Character extends Model
         'firstname', 
         'lastname', 
         'description', 
-        'power', 
+        'aptitude', 
         'role',
         'classe_id', 
         

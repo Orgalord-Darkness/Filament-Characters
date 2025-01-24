@@ -12,4 +12,9 @@ class Classe extends Model
         'name', 
         'description', 
     ]; 
+
+    public function characters()
+    {
+        return $this->hasMany(Character::class);
+    }
 }

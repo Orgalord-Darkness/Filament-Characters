@@ -18,8 +18,8 @@ return new class extends Migration
             $table->text('description')->nullable(); 
             $table->string('aptitude');
             $table->string('role'); 
-            $table->unsignedBigInteger('id_classe');
-            $table->foreign('id_classe')->references('id')->on('classes')->onDelete('cascade'); 
+            $table->unsignedBigInteger('classe_id');
+            $table->foreign('classe_id')->references('id')->on('classes')->onDelete('cascade'); 
             $table->timestamps();
         });
     }
