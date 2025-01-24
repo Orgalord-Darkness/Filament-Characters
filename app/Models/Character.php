@@ -13,5 +13,12 @@ class Character extends Model
         'description', 
         'power', 
         'role',
+        'classe_id', 
+        
     ]; 
+
+    public function classe()
+    {
+        return $this->belongsTo(Classe::class); 
+    }
 }
