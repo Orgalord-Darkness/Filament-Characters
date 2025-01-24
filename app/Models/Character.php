@@ -14,11 +14,16 @@ class Character extends Model
         'aptitude', 
         'role',
         'classe_id', 
+        'grade_id', 
         
     ]; 
 
     public function classe()
     {
         return $this->belongsTo(Classe::class); 
+    }
+    public function grade()
+    {
+        return $this->belongsTo(Grade::class); 
     }
 }
