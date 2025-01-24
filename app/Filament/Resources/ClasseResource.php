@@ -24,7 +24,7 @@ class ClasseResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name'),
-                Forms\Components\TextInput::make('description'),
+                Forms\Components\TextArea::make('description'),
             ]);
     }
 
@@ -42,6 +42,7 @@ class ClasseResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -66,3 +67,4 @@ class ClasseResource extends Resource
         ];
     }
 }
+
