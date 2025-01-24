@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('aptitude');
             $table->string('role'); 
             $table->unsignedBigInteger('classe_id');
+            $table->unsignedBigInteger('grade_id');
             $table->foreign('classe_id')->references('id')->on('classes')->onDelete('cascade'); 
+            $table->foreign('grade_id')->references('id')->on('grades')->onDelete('cascade'); 
             $table->timestamps();
         });
     }
