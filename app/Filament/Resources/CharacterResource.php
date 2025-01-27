@@ -14,9 +14,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Select ; 
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter ; //use pour filtre filament
+use Filament\Tables\Filters\SelectFilter;
+use App\Models\Grade ; 
+use App\Models\Classe ; 
 
 class CharacterResource extends Resource
 {
+    // Récupérer les grades depuis la base de données
     protected static ?string $model = Character::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -43,24 +48,43 @@ class CharacterResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('firstname'),
-                Tables\Columns\TextColumn::make('lastname'),
-                Tables\Columns\TextColumn::make('description'),
-                Tables\Columns\TextColumn::make('aptitude'),
-                Tables\Columns\TextColumn::make('role'),
+                Tables\Columns\TextColumn::make('firstname')
+                    ->wrap() // attribut pour réduire la longueur de la colonne
+                    ->sortable() //attribut pour trier par ordre croissant / décroissant
+                    ->searchable(), //attribut pour ajouter le champ à la barre de recherche généré automatiquement 
+                Tables\Columns\TextColumn::make('lastname')
+                    ->wrap()
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('description')
+                ->wrap()
+                ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('aptitude')
+                ->wrap()
+                ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('role')
+                ->wrap()
+                ->searchable()
+                    ->sortable(),
                 TextColumn::make('classe.name')
-                ->label('Classe')   
-                ->sortable()
-                ->searchable(),
+                ->wrap()
+                    ->label('Classe')   
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('grade.libelle')
-                ->label('Grade')
-                ->formatStateUsing(function ($state) { 
-                    return ucfirst($state); 
-                })
-                ->color(function ($state){
-                    return $state === 'Soldat' ? 'bg-grey-500' :
-                    ($state === 'Recrue' ? 'text-blue-500': 'text-red-500' );  
-                }),
+                ->wrap()
+                    ->label('Grade')
+                    ->sortable()
+                    ->searchable()
+                    ->formatStateUsing(function ($state) { 
+                        return ucfirst($state); 
+                    })
+                    ->color(function ($state){
+                        return $state === 'Soldat' ? 'bg-grey-500' :
+                        ($state === 'Recrue' ? 'text-blue-500': 'text-red-500' );  
+                    }),
                 // ->html(),
                 // ->formatStateUsing(function($state){
                 //     return ucfirst($state); 
@@ -74,15 +98,41 @@ class CharacterResource extends Resource
                 // }),
                 // ->sortable()
                 // ->searchable(),
-                Tables\Columns\TextColumn::make('created_at'),
-                Tables\Columns\TextColumn::make('updated_at'),
+                // Tables\Columns\TextColumn::make('created_at'),
+                // Tables\Columns\TextColumn::make('updated_at'),
 
             ])
             ->filters([
                 //
+                SelectFilter::make('Grade')
+                    ->options( function () {
+                        $grades = Grade::all() ; //Récupérer toutes les valeurs de la table via all pour faire le tableu options
+                        $options = [] ; 
+                        foreach($grades as $row){
+                            if($row->libelle != null){
+                                $options[$row->id] = $row->libelle ; 
+                            } 
+                        }
+                        return $options ; 
+                    })
+                ->attribute('grade_id'),
+
+                SelectFilter::make('Classe')
+                    ->options( function () {
+                        $classes = Classe::all() ; 
+                        $options = [] ; 
+                        foreach($classes as $row){
+                            if($row->name != null){
+                                $options[$row->id] = $row->name ; 
+                            }
+                        }   
+                        return $options ; 
+                    })
+                    ->attribute('classe_id'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -106,4 +156,5 @@ class CharacterResource extends Resource
             'edit' => Pages\EditCharacter::route('/{record}/edit'),
         ];
     }
+
 }

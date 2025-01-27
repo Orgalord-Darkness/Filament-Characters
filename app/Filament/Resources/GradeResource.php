@@ -36,7 +36,13 @@ class GradeResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('libelle')
-                    ->label('Libelle'), 
+                    ->label('Libelle') 
+                    ->extraAttributes(function ($record) {
+                        $grades = Grade::find($record->classe_id);
+                        return [
+                            'style' => $grades ? "background-color: {$grades->color};" : '',
+                        ];
+                    }),
                 TextColumn::make('color')
                     ->label('Couleur')    
                     ->formatStateUsing(function ($state) { 

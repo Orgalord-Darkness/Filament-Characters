@@ -24,7 +24,7 @@ class ClasseResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name'),
-                Forms\Components\TextArea::make('description')->wrap(),
+                Forms\Components\TextArea::make('description'),
             ]);
     }
 
