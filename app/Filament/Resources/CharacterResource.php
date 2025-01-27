@@ -20,6 +20,10 @@ use App\Models\Grade ;
 use App\Models\Classe ; 
 use Filament\Support\Facades\FilamentColor; 
 use Filament\Support\Colors\Color ; 
+use pxlrbt\FilamentExcel\Columns\Column ; 
+use pxlrbt\FilamentExcel\Exports\ExcelExport ; 
+use pxlrbt\FilamentExcel\Actions\ExportAction ; 
+
 
 class CharacterResource extends Resource
 {    
@@ -143,6 +147,17 @@ class CharacterResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                // ExportAction::make('export')
+                //     ->label('Télécharger')
+                //     ->icon('hereicon-o-download')
+                //     ->export(ExcelExport::make()
+                //         ->fromModel(Character::class)
+                //         ->columns([
+                //             Column::make('firstname')->heading('Prénom'), 
+                //             Column::make('lastname')->heading('Nom de famille'), 
+
+                //         ])
+                //     ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
