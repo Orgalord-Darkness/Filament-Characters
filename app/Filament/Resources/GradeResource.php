@@ -37,10 +37,14 @@ class GradeResource extends Resource
             ->columns([
                 TextColumn::make('libelle')
                     ->label('Libelle') 
-                    ->extraAttributes(function ($record) {
-                        $grades = Grade::find($record->classe_id);
+                    ->formatStateUsing(function ($state) { 
+                        return ucfirst($state); 
+                    })
+                    ->color('red')
+                    ->extraAttributes(function ($state) {
                         return [
-                            'style' => $grades ? "background-color: {$grades->color};" : '',
+                           'style' => 'background-color: ' . Grade::getColorByLibelle($state) . '; color: '
+                           .Grade::getColorTextByLibelle($state).' !important ;',
                         ];
                     }),
                 TextColumn::make('color')
@@ -62,7 +66,8 @@ class GradeResource extends Resource
                     //         'style' => "background-color : {$record->status->color};", 
                     //     ]; 
                     // }), 
-                Tables\Columns\TextColumn::make('abilitation'),
+                Tables\Columns\TextColumn::make('abilitation')
+                ->sortable(),
                 Tables\Columns\TextColumn::make('description'),
             ])
             ->filters([
