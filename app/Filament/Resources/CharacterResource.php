@@ -18,13 +18,17 @@ use Filament\Tables\Filters\Filter ; //use pour filtre filament
 use Filament\Tables\Filters\SelectFilter;
 use App\Models\Grade ; 
 use App\Models\Classe ; 
+use Filament\Support\Facades\FilamentColor; 
+use Filament\Support\Colors\Color ; 
 
 class CharacterResource extends Resource
-{
+{    
     // Récupérer les grades depuis la base de données
     protected static ?string $model = Character::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    
 
     public static function form(Form $form): Form
     {
@@ -57,8 +61,10 @@ class CharacterResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('description')
-                ->wrap()
-                ->searchable()
+                    ->label('Description')
+                    ->color('red_text')
+                    ->wrap()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('aptitude')
                 ->wrap()
@@ -67,6 +73,7 @@ class CharacterResource extends Resource
                 Tables\Columns\TextColumn::make('role')
                 ->wrap()
                 ->searchable()
+                ->extraAttributes(['style' =>'color: blue !important ; ',])
                     ->sortable(),
                 TextColumn::make('classe.name')
                 ->wrap()
@@ -74,16 +81,19 @@ class CharacterResource extends Resource
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('grade.libelle')
-                ->wrap()
+                    ->wrap()
                     ->label('Grade')
                     ->sortable()
                     ->searchable()
                     ->formatStateUsing(function ($state) { 
                         return ucfirst($state); 
                     })
-                    ->color(function ($state){
-                        return $state === 'Soldat' ? 'bg-grey-500' :
-                        ($state === 'Recrue' ? 'text-blue-500': 'text-red-500' );  
+                    ->color('red')
+                    ->extraAttributes(function ($state) {
+                        return [
+                           'style' => 'background-color: ' . Grade::getColorByLibelle($state) . '; color: '
+                           .Grade::getColorTextByLibelle($state).' !important ;',
+                        ];
                     }),
                 // ->html(),
                 // ->formatStateUsing(function($state){
@@ -156,5 +166,4 @@ class CharacterResource extends Resource
             'edit' => Pages\EditCharacter::route('/{record}/edit'),
         ];
     }
-
 }

@@ -48,6 +48,32 @@ class Grade extends Model
         // Convertir le RGB en hex
         return sprintf("#%02x%02x%02x", $r, $g, $b);
     }
-    
-    
+
+    public static function getColorByLibelle($libelle)
+    {
+        $color = '#e37dff' ; 
+        $grades = Grade::all() ; 
+        foreach($grades as $row)
+        {
+            if($libelle == $row->libelle){
+                $color = $row->color ; 
+            }
+        }
+        //dd($color);
+        return $color ; 
+    }
+
+    public static function getColorTextByLibelle($libelle)
+    {
+        $color = '#000000' ; 
+        $grades = Grade::all() ; 
+        foreach($grades as $row)
+        {
+            if($libelle == $row->libelle){
+                $color = $row->text_color ; 
+            }
+        }
+        //dd($color);
+        return $color ; 
+    }
 }

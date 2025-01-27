@@ -32,7 +32,11 @@ class ClasseResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'), 
+                Tables\Columns\TextColumn::make('name')
+                    ->color('red')
+                    ->extraAttributes([
+                        'style' => 'color: blue !important ; ',
+                    ]), 
                 Tables\Columns\TextColumn::make('description'), 
                 Tables\Columns\TextColumn::make('created_at'),
                 Tables\Columns\TextColumn::make('updated_at'),  
