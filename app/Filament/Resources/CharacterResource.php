@@ -22,7 +22,14 @@ use Filament\Support\Facades\FilamentColor;
 use Filament\Support\Colors\Color ; 
 use pxlrbt\FilamentExcel\Columns\Column ; 
 use pxlrbt\FilamentExcel\Exports\ExcelExport ; 
-use pxlrbt\FilamentExcel\Actions\ExportAction ; 
+use App\Filament\Exports\CharacterExporter; //exporter une entité -> générer avec make:filament-exporter NomEntite --generate 
+use Filament\Actions\ExportAction ; 
+use Filament\Tables\Actions\ExportBulkAction; 
+use Filament\Actions\Exports\Enums\ExportFormat ; 
+use Filament\Actions\Exports\Models\Export ; 
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction; 
+use Filament\Tables\Actions\EditAction ; 
+use Filament\Tables\Actions\DeleteAction ; 
 
 
 class CharacterResource extends Resource
@@ -147,23 +154,32 @@ class CharacterResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                // ExportAction::make('export')
-                //     ->label('Télécharger')
-                //     ->icon('hereicon-o-download')
-                //     ->export(ExcelExport::make()
-                //         ->fromModel(Character::class)
-                //         ->columns([
-                //             Column::make('firstname')->heading('Prénom'), 
-                //             Column::make('lastname')->heading('Nom de famille'), 
-
-                //         ])
-                //     ),
-            ])
+                ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make(),   
+                    ExportBulkAction::make()
+                    ->exporter(CharacterExporter::class)
+                    ->formats([
+                        ExportFormat::Csv,
+                    ])
+                    ->fileName(fn (Export $export): string => "products-{$export->getKey()}.csv")
+                    //->directDownload() // Pour télécharger directement sans afficher de modal
+                    ->modifyQueryUsing(fn (Builder $query) => $query->where('is_active', true))
+                    ->fileDisk('s3')
+
                 ]),
-            ]);
+            ])
+            // ->headerActions([
+            //     ExportAction::make()
+            //      ->exporter(CharacterExporter::class)
+            //      ->formats([
+            //          ExportFormat::Csv,  
+            //      ])
+            //      ->fileName(fn (Export $export): string => "products-{$export->getKey()}.csv")
+         
+            //      ])
+            ;
     }
 
     public static function getRelations(): array
