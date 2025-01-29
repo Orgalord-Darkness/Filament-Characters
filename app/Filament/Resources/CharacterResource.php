@@ -30,6 +30,8 @@ use Filament\Actions\Exports\Models\Export ;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction; 
 use Filament\Tables\Actions\EditAction ; 
 use Filament\Tables\Actions\DeleteAction ; 
+use App\Filament\Exports\CharacterExport;
+
 
 
 class CharacterResource extends Resource
@@ -154,22 +156,23 @@ class CharacterResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),   
-                    ExportBulkAction::make()
-                    ->exporter(CharacterExporter::class)
-                    ->formats([
-                        ExportFormat::Csv,
-                    ])
-                    ->fileName(fn (Export $export): string => "products-{$export->getKey()}.csv")
-                    //->directDownload() // Pour télécharger directement sans afficher de modal
-                    ->modifyQueryUsing(fn (Builder $query) => $query->where('is_active', true))
-                    ->fileDisk('s3')
-
-                ]),
+                
             ])
+            ->bulkActions([
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),   
+                FilamentExportBulkAction::make('export')
+                    ->label("Télécharger")
+                    ->FileName('Export')
+                    ->defaultFormat('xlsx')
+                    ->defaultPageOrientation('landscape')
+                //])
+                // ->paginated([10,25,50,100,200,300])
+                // ->defaultSort('id','desc');
+            ])
+            ->paginated([10,25,50,100,200,300])
+            ->defaultSort('id','desc');
+
             // ->headerActions([
             //     ExportAction::make()
             //      ->exporter(CharacterExporter::class)

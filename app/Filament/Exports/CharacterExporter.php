@@ -6,6 +6,8 @@ use App\Models\Character;
 use Filament\Actions\Exports\ExportColumn;
 use Filament\Actions\Exports\Exporter;
 use Filament\Actions\Exports\Models\Export;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class CharacterExporter extends Exporter
 {
@@ -42,6 +44,17 @@ class CharacterExporter extends Exporter
     public function getFileName(Export $export): string
     {
         return "products-{$export->getKeys()}.csv" ; 
+    }
+
+    public function headings(): array
+    {
+        return [
+            'ID',
+            'Name',
+            'Grade',
+            'Classe',
+            // Ajoutez d'autres en-têtes selon vos besoins
+        ];
     }
 
     // public function export($query)
