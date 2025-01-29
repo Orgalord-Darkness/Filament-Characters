@@ -163,7 +163,7 @@ class CharacterResource extends Resource
                 //     Tables\Actions\DeleteBulkAction::make(),   
                 FilamentExportBulkAction::make('export')
                     ->label("Télécharger")
-                    ->FileName('Export')
+                    ->FileName('Characters')
                     ->defaultFormat('xlsx')
                     ->defaultPageOrientation('landscape')
                 //])
