@@ -20,6 +20,19 @@ use App\Models\Grade ;
 use App\Models\Classe ; 
 use Filament\Support\Facades\FilamentColor; 
 use Filament\Support\Colors\Color ; 
+use pxlrbt\FilamentExcel\Columns\Column ; 
+use pxlrbt\FilamentExcel\Exports\ExcelExport ; 
+use App\Filament\Exports\CharacterExporter; //exporter une entité -> générer avec make:filament-exporter NomEntite --generate 
+use Filament\Actions\ExportAction ; 
+use Filament\Tables\Actions\ExportBulkAction; 
+use Filament\Actions\Exports\Enums\ExportFormat ; 
+use Filament\Actions\Exports\Models\Export ; 
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction; 
+use Filament\Tables\Actions\EditAction ; 
+use Filament\Tables\Actions\DeleteAction ; 
+use App\Filament\Exports\CharacterExport;
+
+
 
 class CharacterResource extends Resource
 {    
@@ -143,12 +156,33 @@ class CharacterResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),   
+                FilamentExportBulkAction::make('export')
+                    ->label("Télécharger")
+                    ->FileName('Characters')
+                    ->defaultFormat('xlsx')
+                    ->defaultPageOrientation('landscape')
+                //])
+                // ->paginated([10,25,50,100,200,300])
+                // ->defaultSort('id','desc');
+            ])
+            ->paginated([10,25,50,100,200,300])
+            ->defaultSort('id','desc');
+
+            // ->headerActions([
+            //     ExportAction::make()
+            //      ->exporter(CharacterExporter::class)
+            //      ->formats([
+            //          ExportFormat::Csv,  
+            //      ])
+            //      ->fileName(fn (Export $export): string => "products-{$export->getKey()}.csv")
+         
+            //      ])
+            ;
     }
 
     public static function getRelations(): array
