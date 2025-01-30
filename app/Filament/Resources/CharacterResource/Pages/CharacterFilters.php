@@ -18,11 +18,42 @@ class CharacterFilters
             Filter::make('id')
             ->form([
                 TextInput::make('id')->label('N°')
-                ->numeric()
             ])
             ->query(function (Builder $query, array $data): Builder {
                 return $query 
                 ->when($data['id'], fn (Builder $query, $id): Builder => $query->where('id',$id)); 
+            }), 
+            Filter::make('firstname')
+            ->form([
+                TextInput::make('firstname')->label('Firstname : ')
+            ])
+            ->query(function (Builder $query, array $data): Builder {
+                return $query 
+                ->when($data['firstname'], fn (Builder $query, $firstname): Builder => $query->where('firstname',$firstname)); 
+            }), 
+            Filter::make('lastname')
+            ->form([
+                TextInput::make('lastname')->label('Lastname : ')
+            ])
+            ->query(function (Builder $query, array $data): Builder {
+                return $query 
+                ->when($data['lastname'], fn (Builder $query, $lastname): Builder => $query->where('lastname',$lastname)); 
+            }), 
+            Filter::make('aptitude')
+            ->form([
+                TextInput::make('aptitude')->label('Aptitude : ')
+            ])
+            ->query(function (Builder $query, array $data): Builder {
+                return $query 
+                ->when($data['aptitude'], fn (Builder $query, $aptitude): Builder => $query->where('aptitude',$aptitude)); 
+            }), 
+            Filter::make('role')
+            ->form([
+                TextInput::make('role')->label('Role : ')
+            ])
+            ->query(function (Builder $query, array $data): Builder {
+                return $query 
+                ->when($data['role'], fn (Builder $query, $role): Builder => $query->where('role',$role)); 
             }), 
             SelectFilter::make('Grade')
                     ->options( function () {
@@ -51,7 +82,7 @@ class CharacterFilters
                     ->attribute('classe_id'),
                 Filter::make('created_at')
                 ->form([
-                    DatePicker::make('date_debut')->label('Date de création du :')
+                    DatePicker::make('date_debut')->label('Créer du :')
                         ->displayFormat('d M Y')
                         ->native(false),
 

@@ -12,7 +12,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Tables\Columns\TextColumn ;
+use Filament\Tables\Columns\TextColumn ; 
+use App\Filament\Resources\GradeResource\Pages\GradeFilters ;
+use Filament\Tables\Enums\FiltersLayout;
 
 class GradeResource extends Resource
 {
@@ -70,9 +72,7 @@ class GradeResource extends Resource
                 ->sortable(),
                 Tables\Columns\TextColumn::make('description'),
             ])
-            ->filters([
-                //
-            ])
+            ->filters(GradeFilters::getFilters(), layout: FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
