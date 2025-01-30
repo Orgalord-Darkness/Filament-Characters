@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ClasseResource\Pages;
@@ -12,6 +11,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Tables\Columns\ClasseColumns ; 
 
 class ClasseResource extends Resource
 {
@@ -31,16 +31,7 @@ class ClasseResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->color('red')
-                    ->extraAttributes([
-                        'style' => 'color: blue !important ; ',
-                    ]), 
-                Tables\Columns\TextColumn::make('description'), 
-                Tables\Columns\TextColumn::make('created_at'),
-                Tables\Columns\TextColumn::make('updated_at'),  
-            ])
+           ->columns(ClasseColumns::getColumns())
             ->filters([
                 //
             ])
