@@ -31,6 +31,8 @@ use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use Filament\Tables\Actions\EditAction ; 
 use Filament\Tables\Actions\DeleteAction ; 
 use App\Filament\Exports\CharacterExport;
+use App\Filament\Resources\CharacterResource\Pages\CharacterFilters; 
+use Filament\Tables\Enums\FiltersLayout;
 
 
 
@@ -125,34 +127,10 @@ class CharacterResource extends Resource
                 // Tables\Columns\TextColumn::make('updated_at'),
 
             ])
-            ->filters([
+            ->filters(
                 //
-                SelectFilter::make('Grade')
-                    ->options( function () {
-                        $grades = Grade::all() ; //Récupérer toutes les valeurs de la table via all pour faire le tableu options
-                        $options = [] ; 
-                        foreach($grades as $row){
-                            if($row->libelle != null){
-                                $options[$row->id] = $row->libelle ; 
-                            } 
-                        }
-                        return $options ; 
-                    })
-                ->attribute('grade_id'),
-
-                SelectFilter::make('Classe')
-                    ->options( function () {
-                        $classes = Classe::all() ; 
-                        $options = [] ; 
-                        foreach($classes as $row){
-                            if($row->name != null){
-                                $options[$row->id] = $row->name ; 
-                            }
-                        }   
-                        return $options ; 
-                    })
-                    ->attribute('classe_id'),
-            ])
+                CharacterFilters::getFilters(), layout: FiltersLayout::AboveContent
+            )
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
