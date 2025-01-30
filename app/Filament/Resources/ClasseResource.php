@@ -12,6 +12,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Tables\Columns\ClasseColumns ; 
+use App\Filament\Resources\ClasseResource\Pages\ClasseFilters; 
+use Filament\Tables\Enums\FiltersLayout;
 
 class ClasseResource extends Resource
 {
@@ -32,9 +34,9 @@ class ClasseResource extends Resource
     {
         return $table
            ->columns(ClasseColumns::getColumns())
-            ->filters([
-                //
-            ])
+            ->filters(
+                ClasseFilters::getFilters(), layout: FiltersLayout::AboveContent
+            )
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
