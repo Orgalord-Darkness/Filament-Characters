@@ -35,7 +35,6 @@ use App\Filament\Resources\CharacterResource\Pages\CharacterFilters;
 use Filament\Tables\Enums\FiltersLayout;
 
 
-
 class CharacterResource extends Resource
 {    
     // Récupérer les grades depuis la base de données

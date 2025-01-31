@@ -33,7 +33,7 @@ class Grade extends Model
         });
     }
 
-    function darkenColor($hex, $percent) {
+    static function darkenColor($hex, $percent) {
         // Convertir le hex en RGB
         $hex = str_replace("#", "", $hex);
         $r = hexdec(substr($hex, 0, 2));

@@ -26,4 +26,16 @@ class Character extends Model
     {
         return $this->belongsTo(Grade::class); 
     }
+
+    public static function genererCouleurAleatoire($limite = 100) {
+        $couleurs = array();
+        for ($j = 0; $j < $limite; $j++) {
+            $couleur = '#';
+            for ($i = 0; $i < 6; $i++) {
+                $couleur .= dechex(rand(0, 15));
+            }
+            $couleurs[] = $couleur;
+        }
+        return $couleurs;
+    }
 }
